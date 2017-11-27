@@ -16,13 +16,11 @@ public class AllRequestsServlet extends HttpServlet {
                       HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = createPageVariablesMap(request);
-        pageVariables.put("message", "");
+        pageVariables.put("key", request.getParameter("key"));
 
         response.getWriter().println(PageGenerator.instance().getPage("page.html", pageVariables));
-
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-
     }
 
     public void doPost(HttpServletRequest request,
