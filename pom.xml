@@ -14,7 +14,7 @@
 
     <dependencies>
 
-        <!-- jetty server d -->
+        <!-- jetty server -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
