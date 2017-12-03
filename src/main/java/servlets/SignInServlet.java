@@ -1,6 +1,8 @@
 package servlets;
 
 import accounts.AccountService;
+import accounts.UserProfile;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,9 +23,30 @@ public class SignInServlet extends HttpServlet {
         super.doGet(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+
+        if (login == null || password == null) {
+            resp.setContentType("text/html;charset=utf-8");
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        UserProfile userProfile = accountService.getUserByLogin(login);
+        if (userProfile == null || !userProfile.getPass().equals(password)) {
+            resp.setContentType("text/html;charset=utf-8");
+            resp.getWriter().println("Unauthorized");
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        accountService.addSession(req.getSession().getId(), userProfile);
+        //Gson gson = new Gson();
+        //String json = gson.toJson(userProfile);
+        resp.setContentType("text/html;charset=utf-8");
+        resp.getWriter().println("Authorized: " + login);
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Override

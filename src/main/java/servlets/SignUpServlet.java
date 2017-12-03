@@ -1,6 +1,7 @@
 package servlets;
 
 import accounts.AccountService;
+import accounts.UserProfile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,9 +21,18 @@ public class SignUpServlet extends HttpServlet {
         super.doGet(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+
+        UserProfile userProfile = accountService.getUserByLogin(login);
+
+        if (userProfile == null || !userProfile.getPass().equals(password)) {
+            accountService.addNewUser(new UserProfile(login, password, login));
+            resp.setContentType("text/html;charset=utf-8");
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
+
     }
 
     @Override

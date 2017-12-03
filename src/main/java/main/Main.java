@@ -13,7 +13,6 @@ import servlets.SignInServlet;
 import servlets.SignUpServlet;
 import servlets.UsersServlet;
 
-
 public class Main {
     public static void main(String[] args) throws Exception {
         AccountService accountService = new AccountService();
@@ -39,6 +38,7 @@ public class Main {
         server.setHandler(handlers);
 
         server.start();
+        java.util.logging.Logger.getGlobal().info("Server started");
         server.join();
     }
 }
