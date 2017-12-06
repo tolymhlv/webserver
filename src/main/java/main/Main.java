@@ -8,13 +8,23 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import servlets.SessionServlet;
 import servlets.SignInServlet;
 import servlets.SignUpServlet;
 import servlets.UsersServlet;
+import utils.HibernateSessionFactory;
+
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        SessionFactory sessionFactory = HibernateSessionFactory.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
         AccountService accountService = new AccountService();
 
         accountService.addNewUser(new UserProfile("admin"));
